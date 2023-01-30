@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
-
+// import logo from './logo.svg';
+// import './App.css';
+import { useEffect, useState } from 'react';
+import './index.css';
 function App() {
+  const [fact,setFacts] = useState('')
+
+
+  useEffect(()=>{
+    getFacts();
+  },[])
+  const getFacts = async () => {
+    console.log('api calling ~ line no 11 ~ App.js');
+    try {
+      const response = await fetch('https://catfact.ninja/fact')
+      const ResponseCatsinfo = await response.json();
+      console.log(ResponseCatsinfo);
+      setFacts(ResponseCatsinfo.fact);//here fact is the data from api
+    } catch (error) {
+      console.error(error,'......');
+    } finally {
+     
+    }
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <h1>Cat Facts</h1>
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        <div className='facts'>
+          <p className='fact_paragraph'>
+           {fact}
+          </p>
+          <div className='fact_button'>
+             <button
+             onClick={getFacts}
+             >Facts</button>
+             </div>
+  
+        </div>
+      
     </div>
   );
 }
